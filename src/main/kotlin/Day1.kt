@@ -12,21 +12,34 @@ fun testStream() = resourceLineStream("/01/test.txt")
 fun inputStream() = resourceLineStream("/01/input.txt")
 
 fun part1(): Int {
-    val pairs =
-        inputStream().map { line -> line.split("\\s+".toRegex()).map(String::toInt) }.toList()
+    val (lefts, rights) =
+        inputStream()
+            .toList()
+            .map { line ->
+                val left = line.substringBefore(" ").toInt()
+                val right = line.substringAfterLast(" ").toInt()
 
-    val lefts = pairs.map { it[0] }.sorted()
-    val rights = pairs.map { it[1] }.sorted()
+                left to right
+            }
+            .unzip()
 
-    return lefts.zip(rights).map { abs(it.second - it.first) }.sum()
+    val leftsSorted = lefts.sorted()
+    val rightsSorted = rights.sorted()
+
+    return leftsSorted.zip(rightsSorted).sumOf { abs(it.second - it.first) }
 }
 
 fun part2(): Int {
-    val pairs =
-        inputStream().map { line -> line.split("\\s+".toRegex()).map(String::toInt) }.toList()
+    val (lefts, rights) =
+        inputStream()
+            .toList()
+            .map { line ->
+                val left = line.substringBefore(" ").toInt()
+                val right = line.substringAfterLast(" ").toInt()
 
-    val lefts = pairs.map { it[0] }
-    val rights = pairs.map { it[1] }
+                left to right
+            }
+            .unzip()
 
-    return lefts.map { left -> left * rights.count { right -> left == right } }.sum()
+    return lefts.sumOf { left -> left * rights.count { right -> left == right } }
 }
