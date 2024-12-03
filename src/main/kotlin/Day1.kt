@@ -1,17 +1,17 @@
 package io.github.houli
 
-import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 fun main() {
     println("Part 1: ${part1()}")
     println("Part 2: ${part2()}")
 }
 
-fun testStream() = resourceLineStream("/01/test.txt")
+private fun testStream() = resourceLineStream("/01/test.txt")
 
-fun inputStream() = resourceLineStream("/01/input.txt")
+private fun inputStream() = resourceLineStream("/01/input.txt")
 
-fun part1(): Int {
+private fun part1(): Int {
     val (lefts, rights) =
         inputStream()
             .toList()
@@ -26,10 +26,10 @@ fun part1(): Int {
     val leftsSorted = lefts.sorted()
     val rightsSorted = rights.sorted()
 
-    return leftsSorted.zip(rightsSorted).sumOf { abs(it.second - it.first) }
+    return leftsSorted.zip(rightsSorted).sumOf { (it.second - it.first).absoluteValue }
 }
 
-fun part2(): Int {
+private fun part2(): Int {
     val (lefts, rights) =
         inputStream()
             .toList()
