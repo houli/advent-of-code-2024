@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation("me.alllex.parsus:parsus-jvm:0.6.1")
     testImplementation(kotlin("test"))
 }
 
