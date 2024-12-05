@@ -30,7 +30,11 @@ private fun part1(): Int {
                         val nextI = i + directionI * k
                         val nextJ = j + directionJ * k
 
-                        if (nextI in 0..<numberOfLines && nextJ in 0..<lineLength && chars[nextI][nextJ] == wordToMatch[k]) {
+                        if (
+                            nextI in 0..<numberOfLines &&
+                                nextJ in 0..<lineLength &&
+                                chars[nextI][nextJ] == wordToMatch[k]
+                        ) {
                             if (k == wordToMatch.length - 1) {
                                 count++
                             }
@@ -40,7 +44,6 @@ private fun part1(): Int {
                     }
                 }
             }
-
         }
     }
     return count
@@ -62,7 +65,10 @@ private fun part2(): Int {
                 val bottomLeftChar = chars.getOrNull(i + 1)?.getOrNull(j - 1)
                 val bottomRightChar = chars.getOrNull(i + 1)?.getOrNull(j + 1)
 
-                if (setOf(topLeftChar, bottomRightChar) == charsToMatch && setOf(topRightChar, bottomLeftChar) == charsToMatch) {
+                if (
+                    setOf(topLeftChar, bottomRightChar) == charsToMatch &&
+                        setOf(topRightChar, bottomLeftChar) == charsToMatch
+                ) {
                     count++
                 }
             }
