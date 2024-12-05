@@ -65,17 +65,16 @@ private fun part2(): Int {
         .sumOf { update -> update[update.lastIndex / 2] }
 }
 
-private fun buildRules(ruleLines: List<String>): Map<Int, List<OrderingRule>> =
-    buildMap() {
-        ruleLines.forEach { line ->
-            val (num1, num2) = line.split("|").map(String::toInt)
-            val num1Rule = OrderingRule.Before(num2)
-            val num2Rule = OrderingRule.After(num1)
+private fun buildRules(ruleLines: List<String>): Map<Int, List<OrderingRule>> = buildMap {
+    ruleLines.forEach { line ->
+        val (num1, num2) = line.split("|").map(String::toInt)
+        val num1Rule = OrderingRule.Before(num2)
+        val num2Rule = OrderingRule.After(num1)
 
-            merge(num1, listOf(num1Rule)) { current, _ -> current + num1Rule }
-            merge(num2, listOf(num2Rule)) { current, _ -> current + num2Rule }
-        }
+        merge(num1, listOf(num1Rule)) { current, _ -> current + num1Rule }
+        merge(num2, listOf(num2Rule)) { current, _ -> current + num2Rule }
     }
+}
 
 private fun isValidUpdate(update: List<Int>, rules: Map<Int, List<OrderingRule>>): Boolean {
     val updateNums = update.toSet()
