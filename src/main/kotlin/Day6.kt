@@ -83,6 +83,11 @@ private fun part2(): Int {
                 continue
             }
 
+            if (i == initialY && j == initialX) {
+                // Can't place obstacle at initial position
+                continue
+            }
+
             var direction = Direction.UP
             var currentPosition = Point(initialX, initialY)
             val visited = mutableSetOf<PointDirection>(PointDirection(currentPosition, direction))
