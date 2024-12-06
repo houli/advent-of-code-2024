@@ -23,30 +23,28 @@ data class PointDirection(val point: Point, val direction: Direction)
 private fun part1(): Int {
     val lines = inputStream().toList()
     val numberOfLines = lines.size
-    val lineLength = lines[0].length
+    val lab = Array(numberOfLines) { lines[it].toCharArray() }
 
-    val chars = Array(numberOfLines) { lines[it].toCharArray() }
+    val initialY = lab.indexOfFirst { it.contains('^') }
+    val initialX = lab[initialY].indexOf('^')
+    val initialPosition = Point(initialX, initialY)
 
-    val initialY = chars.indexOfFirst { it.contains('^') }
-    val initialX = chars[initialY].indexOf('^')
-    var currentPosition = Point(initialX, initialY)
+    return visitedPoints(initialPosition, Direction.UP, lab).size
+}
 
-    var direction = Direction.UP
-    val visited = mutableSetOf<Point>(currentPosition)
+private fun part2(): Int {
+    val lines = inputStream().toList()
+    val numberOfLines = lines.size
+    val lab = Array(numberOfLines) { lines[it].toCharArray() }
 
-    while (true) {
-        val next = nextPosition(currentPosition, direction)
-        if (next.x !in 0..<lineLength || next.y !in 0..<numberOfLines) {
-            break
-        } else if (chars[next.y][next.x] == '#') {
-            direction = turn90Degrees(direction)
-        } else {
-            visited.add(currentPosition)
-            currentPosition = next
-        }
+    val initialY = lab.indexOfFirst { it.contains('^') }
+    val initialX = lab[initialY].indexOf('^')
+    val initialPosition = Point(initialX, initialY)
+
+    // See which points are visited on a regular traversal and use those as potential obstacles
+    return visitedPoints(initialPosition, Direction.UP, lab).count {
+        simulatedObstacleCausesLoop(it, initialPosition, Direction.UP, lab)
     }
-
-    return visited.size
 }
 
 private fun nextPosition(point: Point, direction: Direction): Point =
@@ -65,52 +63,72 @@ private fun turn90Degrees(direction: Direction): Direction =
         Direction.LEFT -> Direction.UP
     }
 
-private fun part2(): Int {
-    val lines = inputStream().toList()
-    val numberOfLines = lines.size
-    val lineLength = lines[0].length
+private fun visitedPoints(
+    initialPosition: Point,
+    initialDirection: Direction,
+    lab: Array<CharArray>,
+): Set<Point> {
+    val numberOfLines = lab.size
+    val lineLength = lab[0].size
 
-    val chars = Array(numberOfLines) { lines[it].toCharArray() }
+    var currentPosition = initialPosition
+    var direction = initialDirection
+    val visited = mutableSetOf<Point>(currentPosition)
 
-    val initialY = chars.indexOfFirst { it.contains('^') }
-    val initialX = chars[initialY].indexOf('^')
-
-    var loopCausingObstaclesCount = 0
-    for (i in 0..<chars.size) {
-        for (j in 0..<chars[i].size) {
-            if (chars[i][j] == '#') {
-                // Ignore existing obstacles
-                continue
-            }
-
-            if (i == initialY && j == initialX) {
-                // Can't place obstacle at initial position
-                continue
-            }
-
-            var direction = Direction.UP
-            var currentPosition = Point(initialX, initialY)
-            val visited = mutableSetOf<PointDirection>(PointDirection(currentPosition, direction))
-            var escaped = false
-
-            while (true) {
-                val next = nextPosition(currentPosition, direction)
-                if (visited.contains(PointDirection(next, direction))) {
-                    loopCausingObstaclesCount++
-                    break
-                } else if (next.x !in 0..<lineLength || next.y !in 0..<numberOfLines) {
-                    escaped = true
-                    break
-                } else if (chars[next.y][next.x] == '#' || (next.y == i && next.x == j)) {
-                    // Obstacle or simulated obstacle
-                    direction = turn90Degrees(direction)
-                } else {
-                    visited.add(PointDirection(currentPosition, direction))
-                    currentPosition = next
-                }
-            }
+    while (true) {
+        val next = nextPosition(currentPosition, direction)
+        if (next.x !in 0..<lineLength || next.y !in 0..<numberOfLines) {
+            visited.add(currentPosition)
+            break
+        } else if (lab[next.y][next.x] == '#') {
+            direction = turn90Degrees(direction)
+        } else {
+            visited.add(currentPosition)
+            currentPosition = next
         }
     }
 
-    return loopCausingObstaclesCount
+    return visited
+}
+
+private fun simulatedObstacleCausesLoop(
+    simulatedObstaclePosition: Point,
+    initialPosition: Point,
+    initialDirection: Direction,
+    lab: Array<CharArray>,
+): Boolean {
+    if (lab[simulatedObstaclePosition.y][simulatedObstaclePosition.x] == '#') {
+        // Ignore existing obstacles
+        return false
+    }
+
+    if (simulatedObstaclePosition == initialPosition) {
+        // Can't place obstacle at initial position
+        return false
+    }
+
+    val numberOfLines = lab.size
+    val lineLength = lab[0].size
+
+    var direction = initialDirection
+    var currentPosition = initialPosition
+    val visited = mutableSetOf<PointDirection>(PointDirection(currentPosition, direction))
+
+    while (true) {
+        val next = nextPosition(currentPosition, direction)
+        if (visited.contains(PointDirection(next, direction))) {
+            // Loop detected
+            return true
+        } else if (next.x !in 0..<lineLength || next.y !in 0..<numberOfLines) {
+            break
+        } else if (lab[next.y][next.x] == '#' || next == simulatedObstaclePosition) {
+            // Obstacle or simulated obstacle
+            direction = turn90Degrees(direction)
+        } else {
+            visited.add(PointDirection(currentPosition, direction))
+            currentPosition = next
+        }
+    }
+    // Escaped
+    return false
 }
