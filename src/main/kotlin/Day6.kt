@@ -112,20 +112,21 @@ private fun simulatedObstacleCausesLoop(
 
     var direction = initialDirection
     var currentPosition = initialPosition
-    val visited = mutableSetOf<PointDirection>(PointDirection(currentPosition, direction))
+    val turnPointDirections =
+        mutableSetOf<PointDirection>(PointDirection(currentPosition, direction))
 
     while (true) {
         val next = nextPosition(currentPosition, direction)
-        if (visited.contains(PointDirection(next, direction))) {
+        if (turnPointDirections.contains(PointDirection(next, direction))) {
             // Loop detected
             return true
         } else if (next.x !in 0..<lineLength || next.y !in 0..<numberOfLines) {
             break
         } else if (lab[next.y][next.x] == '#' || next == simulatedObstaclePosition) {
             // Obstacle or simulated obstacle
+            turnPointDirections.add(PointDirection(next, direction))
             direction = turn90Degrees(direction)
         } else {
-            visited.add(PointDirection(currentPosition, direction))
             currentPosition = next
         }
     }
