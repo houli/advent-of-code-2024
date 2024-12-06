@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     implementation("me.alllex.parsus:parsus-jvm:0.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     testImplementation(kotlin("test"))
 }
 

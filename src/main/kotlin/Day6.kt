@@ -1,5 +1,10 @@
 package io.github.houli
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+
 fun main() {
     println("Part 1: ${part1()}")
     println("Part 2: ${part2()}")
@@ -42,8 +47,11 @@ private fun part2(): Int {
     val initialPosition = Point(initialX, initialY)
 
     // See which points are visited on a regular traversal and use those as potential obstacles
-    return visitedPoints(initialPosition, Direction.UP, lab).count {
-        simulatedObstacleCausesLoop(it, initialPosition, Direction.UP, lab)
+    return runBlocking(Dispatchers.Default) {
+        visitedPoints(initialPosition, Direction.UP, lab)
+            .map { async { simulatedObstacleCausesLoop(it, initialPosition, Direction.UP, lab) } }
+            .awaitAll()
+            .count { it }
     }
 }
 
