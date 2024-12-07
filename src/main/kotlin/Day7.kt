@@ -23,8 +23,14 @@ private fun testStream() = resourceLineStream("/07/test.txt")
 private fun inputStream() = resourceLineStream("/07/input.txt")
 
 private fun part1(): Long {
-    val input = inputStream().toList()
+    return commonSolution(inputStream().toList(), setOf(Operator.ADD, Operator.MULTIPLY))
+}
 
+private fun part2(): Long {
+    return commonSolution(inputStream().toList(), Operator.entries.toSet())
+}
+
+private fun commonSolution(input: List<String>, validOperators: Set<Operator>): Long {
     return runBlocking(Dispatchers.Default) {
             input
                 .map { line ->
@@ -34,37 +40,7 @@ private fun part1(): Long {
                         val numbers = numbersString.trim().split(" ").map(String::toLong)
 
                         val operatorPermutations =
-                            permutationsStream(
-                                numbers.size - 1,
-                                setOf(Operator.ADD, Operator.MULTIPLY),
-                            )
-                        val solution =
-                            operatorsSatisfyingTarget(target, numbers, operatorPermutations)
-
-                        if (solution.isPresent) {
-                            target
-                        } else {
-                            0
-                        }
-                    }
-                }
-                .awaitAll()
-        }
-        .sum()
-}
-
-private fun part2(): Long {
-    val input = inputStream().toList()
-
-    return runBlocking(Dispatchers.Default) {
-            input
-                .map { line ->
-                    async {
-                        val (targetString, numbersString) = line.split(":")
-                        val target = targetString.toLong()
-                        val numbers = numbersString.trim().split(" ").map(String::toLong)
-
-                        val operatorPermutations = permutationsStream(numbers.size - 1)
+                            permutationsStream(numbers.size - 1, validOperators)
                         val solution =
                             operatorsSatisfyingTarget(target, numbers, operatorPermutations)
 
@@ -104,10 +80,7 @@ private fun operatorsSatisfyingTarget(
         .findAny()
 }
 
-private fun permutationsStream(
-    size: Int,
-    validOperators: Set<Operator> = Operator.entries.toSet(),
-): Stream<List<Operator>> {
+private fun permutationsStream(size: Int, validOperators: Set<Operator>): Stream<List<Operator>> {
     fun permutationsStreamInternal(current: List<Operator>): Stream<List<Operator>> {
         if (current.size == size) {
             return Stream.of(current)
