@@ -64,15 +64,11 @@ private fun operatorsSatisfyingTarget(
     return operatorPermutations
         .filter { operators ->
             val result =
-                numbers.foldIndexed(0L) { index, acc, number ->
-                    if (index == 0) {
-                        number
-                    } else {
-                        when (operators[index - 1]) {
-                            Operator.ADD -> acc + number
-                            Operator.MULTIPLY -> acc * number
-                            Operator.CONCAT -> (acc.toString() + number.toString()).toLong()
-                        }
+                numbers.reduceIndexed() { index, acc, number ->
+                    when (operators[index - 1]) {
+                        Operator.ADD -> acc + number
+                        Operator.MULTIPLY -> acc * number
+                        Operator.CONCAT -> "$acc$number".toLong()
                     }
                 }
             result == target
