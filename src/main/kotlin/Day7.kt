@@ -2,6 +2,9 @@ package io.github.houli
 
 import java.util.Optional
 import java.util.stream.Stream
+import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -68,7 +71,8 @@ private fun operatorsSatisfyingTarget(
                     when (operators[index - 1]) {
                         Operator.ADD -> acc + number
                         Operator.MULTIPLY -> acc * number
-                        Operator.CONCAT -> "$acc$number".toLong()
+                        Operator.CONCAT ->
+                            (acc * 10.0.pow(floor(log10(number.toDouble()) + 1)) + number).toLong()
                     }
                 }
             result == target
