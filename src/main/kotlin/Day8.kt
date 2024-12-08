@@ -13,17 +13,7 @@ private fun part1(): Int {
     val lines = inputStream().toList()
     val numberOfLines = lines.size
     val lineLength = lines[0].length
-
-    val appearances = buildMap {
-        lines.forEachIndexed { y, line ->
-            line.forEachIndexed { x, char ->
-                if (char != '.') {
-                    val point = Point(x, y)
-                    merge(char, listOf(point)) { current, _ -> current + point }
-                }
-            }
-        }
-    }
+    val appearances = buildAppearanceMap(lines)
 
     val antinodes =
         appearances
@@ -48,17 +38,7 @@ private fun part2(): Int {
     val lines = inputStream().toList()
     val numberOfLines = lines.size
     val lineLength = lines[0].length
-
-    val appearances = buildMap {
-        lines.forEachIndexed { y, line ->
-            line.forEachIndexed { x, char ->
-                if (char != '.') {
-                    val point = Point(x, y)
-                    merge(char, listOf(point)) { current, _ -> current + point }
-                }
-            }
-        }
-    }
+    val appearances = buildAppearanceMap(lines)
 
     val antinodes =
         appearances
@@ -91,12 +71,19 @@ private fun part2(): Int {
     return antinodes.size
 }
 
-fun pointInBounds(point: Point, width: Int, height: Int): Boolean {
-    return point.x in 0..<width && point.y in 0..<height
-}
-
-fun <T> generate2Combinations(list: List<T>): List<List<T>> {
-    return list.indices.flatMap { i ->
-        (i + 1 until list.size).map { j -> listOf(list[i], list[j]) }
+private fun buildAppearanceMap(lines: List<String>): Map<Char, List<Point>> = buildMap {
+    lines.forEachIndexed { y, line ->
+        line.forEachIndexed { x, char ->
+            if (char != '.') {
+                val point = Point(x, y)
+                merge(char, listOf(point)) { current, _ -> current + point }
+            }
+        }
     }
 }
+
+private fun pointInBounds(point: Point, width: Int, height: Int): Boolean =
+    point.x in 0..<width && point.y in 0..<height
+
+private fun <T> generate2Combinations(list: List<T>): List<List<T>> =
+    list.indices.flatMap { i -> (i + 1 until list.size).map { j -> listOf(list[i], list[j]) } }
