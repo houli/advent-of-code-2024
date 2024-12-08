@@ -21,8 +21,6 @@ enum class Direction {
     RIGHT,
 }
 
-data class Point(val x: Int, val y: Int)
-
 data class PointDirection(val point: Point, val direction: Direction)
 
 private fun part1(): Int {

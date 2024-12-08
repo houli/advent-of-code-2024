@@ -64,7 +64,7 @@ private fun operatorsSatisfyingTarget(
     return operatorPermutations
         .filter { operators ->
             val result =
-                numbers.reduceIndexed() { index, acc, number ->
+                numbers.reduceIndexed { index, acc, number ->
                     when (operators[index - 1]) {
                         Operator.ADD -> acc + number
                         Operator.MULTIPLY -> acc * number
