@@ -65,8 +65,7 @@ private fun compactFilesystemFragmented(
                     lastFileBlock.size - firstEmptyBlock.size,
                 )
         } else {
-            filesystem[firstEmptyBlockIndex] =
-                FilesystemEntry.FileBlock(lastFileBlock.id, lastFileBlock.size)
+            filesystem[firstEmptyBlockIndex] = lastFileBlock
             filesystem[lastFileBlockIndex] = FilesystemEntry.EmptyBlock(lastFileBlock.size)
             filesystem.add(
                 firstEmptyBlockIndex + 1,
