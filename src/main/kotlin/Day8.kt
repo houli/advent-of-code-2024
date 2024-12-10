@@ -25,7 +25,7 @@ private fun part1(): Int {
                     val secondAntinode =
                         Point(b.x + distanceFirstSecond.first, b.y + distanceFirstSecond.second)
                     listOf(firstAntinode, secondAntinode).filter {
-                        pointInBounds(it, lineLength, numberOfLines)
+                        it.inBounds(lineLength, numberOfLines)
                     }
                 }
             }
@@ -52,7 +52,7 @@ private fun part2(): Int {
                                     point.y - distanceFirstSecond.second,
                                 )
                             }
-                            .takeWhile { pointInBounds(it, lineLength, numberOfLines) }
+                            .takeWhile { it.inBounds(lineLength, numberOfLines) }
 
                     val secondAntinodes =
                         generateSequence(b) { point ->
@@ -61,7 +61,7 @@ private fun part2(): Int {
                                     point.y + distanceFirstSecond.second,
                                 )
                             }
-                            .takeWhile { pointInBounds(it, lineLength, numberOfLines) }
+                            .takeWhile { it.inBounds(lineLength, numberOfLines) }
 
                     firstAntinodes + secondAntinodes
                 }
