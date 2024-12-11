@@ -68,7 +68,7 @@ private fun trailheadPointScoreAndRating(
 
     visitAllIncreasingNodes(trailheadPoint)
 
-    val score = paths.map { path -> path.last() }.toSet().size
+    val score = paths.map { it.last() }.toSet().size
     val rating = paths.size
     return TrailheadValue(score, rating)
 }
