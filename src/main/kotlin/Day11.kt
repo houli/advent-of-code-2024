@@ -15,9 +15,7 @@ private fun part1(): Long {
     val stones = inputStream().toList().joinToString("").split(" ").map(String::toLong)
     var stonesCount = stones.groupingBy { it }.eachCount().mapValues { it.value.toLong() }
 
-    repeat(25) {
-        stonesCount = blink(stonesCount)
-    }
+    repeat(25) { stonesCount = blink(stonesCount) }
     return stonesCount.map { it.value }.sum()
 }
 
@@ -25,21 +23,17 @@ private fun part2(): Long {
     val stones = inputStream().toList().joinToString("").split(" ").map(String::toLong)
     var stonesCount = stones.groupingBy { it }.eachCount().mapValues { it.value.toLong() }
 
-    repeat(75) {
-        stonesCount = blink(stonesCount)
-    }
+    repeat(75) { stonesCount = blink(stonesCount) }
     return stonesCount.map { it.value }.sum()
 }
 
 private fun blink(stones: Map<Long, Long>): Map<Long, Long> {
-    val new = mutableMapOf<Long, Long>()
+    val newCounts = mutableMapOf<Long, Long>()
     stones.forEach { (stone, count) ->
-        val stones = step(stone)
-        stones.forEach { newStone ->
-            new.merge(newStone, count, Long::plus)
-        }
+        val newStones = step(stone)
+        newStones.forEach { newStone -> newCounts.merge(newStone, count, Long::plus) }
     }
-    return new
+    return newCounts
 }
 
 private fun step(stone: Long): List<Long> =
