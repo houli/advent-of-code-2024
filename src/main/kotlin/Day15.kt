@@ -127,7 +127,7 @@ private fun part2(): Int {
 
     var currentPosition = Point(initialX * 2, initialY)
 
-    moves.forEachIndexed { i, move ->
+    moves.forEach { move ->
         val boxTree = boxTreeUntilEmptyInDirection(grid, currentPosition, move)
         if (boxTree != null) {
             // Move boxes
