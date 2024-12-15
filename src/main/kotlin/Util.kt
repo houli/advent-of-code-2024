@@ -7,4 +7,6 @@ fun resourceLineStream(filename: String): Stream<String> =
 
 data class Point(val x: Int, val y: Int) {
     fun inBounds(width: Int, height: Int): Boolean = x in 0..<width && y in 0..<height
+
+    operator fun plus(other: Point): Point = Point(x + other.x, y + other.y)
 }

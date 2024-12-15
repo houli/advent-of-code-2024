@@ -50,7 +50,7 @@ private fun trailheadPointScoreAndRating(
             return
         } else {
             directions.forEach { direction ->
-                val nextPoint = Point(currentPoint.x + direction.x, currentPoint.y + direction.y)
+                val nextPoint = currentPoint + direction
                 if (nextPoint.inBounds(width, height)) {
                     val nextElevation = elevationMap[nextPoint.y][nextPoint.x]
                     val targetElevation = elevationMap[currentPoint.y][currentPoint.x] + 1

@@ -93,7 +93,7 @@ private fun gardenRegipns(garden: Array<CharArray>): List<Region> {
     fun dfs(point: Point, region: Region) {
         visited.add(point)
         for (direction in directions) {
-            val newPoint = Point(point.x + direction.x, point.y + direction.y)
+            val newPoint = point + direction
             if (!visited.contains(newPoint) && newPoint.inBounds(garden[0].size, garden.size)) {
                 val plant = garden[newPoint.y][newPoint.x]
                 if (plant == region.plant) {
