@@ -207,31 +207,25 @@ private fun boxTreeUntilEmptyInDirection(
                 currentPosition + move.toVector()
             }
         val nextTile = grid[nextPosition.y][nextPosition.x]
-        if (move == Move.LEFT) {
-            // Left, check for empty, wall, or big box end
+        if (move == Move.LEFT || move == Move.RIGHT) {
+            // Left/right, check for empty, wall, or big box end/start
+            val (desiredTile, bigBoxStartPosition, bigBoxEndPosition) =
+                if (move == Move.LEFT) {
+                    val start = Point(nextPosition.x - 1, nextPosition.y)
+                    Triple(Tile.BIG_BOX_END, start, nextPosition)
+                } else {
+                    val end = Point(nextPosition.x + 1, nextPosition.y)
+                    Triple(Tile.BIG_BOX_START, nextPosition, end)
+                }
+
             if (nextTile == Tile.EMPTY) {
                 return BinaryTree.Leaf(TreeNode.Empty)
             } else if (nextTile == Tile.WALL) {
                 return BinaryTree.Leaf(TreeNode.Wall)
-            } else if (nextTile == Tile.BIG_BOX_END) {
-                val bigBoxStartPosition = Point(nextPosition.x - 1, nextPosition.y)
+            } else if (nextTile == desiredTile) {
                 return BinaryTree.Branch(
-                    TreeNode.BigBox(bigBoxStartPosition, nextPosition),
+                    TreeNode.BigBox(bigBoxStartPosition, bigBoxEndPosition),
                     buildBinaryTree(bigBoxStartPosition),
-                    BinaryTree.Leaf(TreeNode.Empty),
-                )
-            }
-        } else if (move == Move.RIGHT) {
-            // Right, check for empty, wall, or big box start
-            if (nextTile == Tile.EMPTY) {
-                return BinaryTree.Leaf(TreeNode.Empty)
-            } else if (nextTile == Tile.WALL) {
-                return BinaryTree.Leaf(TreeNode.Wall)
-            } else if (nextTile == Tile.BIG_BOX_START) {
-                val bigBoxEndPosition = Point(nextPosition.x + 1, nextPosition.y)
-                return BinaryTree.Branch(
-                    TreeNode.BigBox(nextPosition, bigBoxEndPosition),
-                    buildBinaryTree(nextPosition),
                     BinaryTree.Leaf(TreeNode.Empty),
                 )
             }
@@ -264,29 +258,22 @@ private fun boxTreeUntilEmptyInDirection(
     val nextTile = grid[nextPosition.y][nextPosition.x]
 
     val toReturn =
-        if (nextTile == Tile.BIG_BOX_START) {
-            val bigBoxEndPosition = Point(nextPosition.x + 1, nextPosition.y)
+        if (nextTile == Tile.BIG_BOX_START || nextTile == Tile.BIG_BOX_END) {
+            val (bigBoxStartPosition, bigBoxEndPosition) =
+                if (nextTile == Tile.BIG_BOX_START) {
+                    nextPosition to Point(nextPosition.x + 1, nextPosition.y)
+                } else {
+                    Point(nextPosition.x - 1, nextPosition.y) to nextPosition
+                }
             val rightNode =
                 if (move == Move.LEFT || move == Move.RIGHT) {
                     BinaryTree.Leaf(TreeNode.Empty)
                 } else {
                     buildBinaryTree(bigBoxEndPosition)
                 }
+
             BinaryTree.Branch(
-                TreeNode.BigBox(nextPosition, bigBoxEndPosition),
-                buildBinaryTree(nextPosition),
-                rightNode,
-            )
-        } else if (nextTile == Tile.BIG_BOX_END) {
-            val bigBoxStartPosition = Point(nextPosition.x - 1, nextPosition.y)
-            val rightNode =
-                if (move == Move.LEFT || move == Move.RIGHT) {
-                    BinaryTree.Leaf(TreeNode.Empty)
-                } else {
-                    buildBinaryTree(nextPosition)
-                }
-            BinaryTree.Branch(
-                TreeNode.BigBox(bigBoxStartPosition, nextPosition),
+                TreeNode.BigBox(bigBoxStartPosition, bigBoxEndPosition),
                 buildBinaryTree(bigBoxStartPosition),
                 rightNode,
             )
@@ -321,15 +308,17 @@ private fun doubleUpGrid(grid: Array<Array<Tile>>): Array<Array<Tile>> {
     val newGrid = Array(grid.size) { Array(grid[0].size * 2) { Tile.EMPTY } }
     for (y in grid.indices) {
         for (x in grid[y].indices) {
-            val baseX = x * 2
             val originalGridTile = grid[y][x]
-            if (originalGridTile == Tile.BOX) {
-                newGrid[y][baseX] = Tile.BIG_BOX_START
-                newGrid[y][baseX + 1] = Tile.BIG_BOX_END
-            } else {
-                newGrid[y][baseX] = originalGridTile
-                newGrid[y][baseX + 1] = originalGridTile
-            }
+            val (first, second) =
+                if (originalGridTile == Tile.BOX) {
+                    Tile.BIG_BOX_START to Tile.BIG_BOX_END
+                } else {
+                    originalGridTile to originalGridTile
+                }
+
+            val baseX = x * 2
+            newGrid[y][baseX] = first
+            newGrid[y][baseX + 1] = second
         }
     }
     return newGrid
