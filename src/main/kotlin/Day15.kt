@@ -312,7 +312,9 @@ private fun binaryTreeContainsWall(tree: BinaryTree<TreeNode>): Boolean =
     when (tree) {
         is BinaryTree.Leaf -> tree.value == TreeNode.Wall
         is BinaryTree.Branch ->
-            binaryTreeContainsWall(tree.left) || binaryTreeContainsWall(tree.right)
+            tree.value == TreeNode.Wall ||
+                binaryTreeContainsWall(tree.left) ||
+                binaryTreeContainsWall(tree.right)
     }
 
 private fun doubleUpGrid(grid: Array<Array<Tile>>): Array<Array<Tile>> {
