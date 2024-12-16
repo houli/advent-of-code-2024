@@ -14,15 +14,6 @@ private fun testStream() = resourceLineStream("/06/test.txt")
 
 private fun inputStream() = resourceLineStream("/06/input.txt")
 
-enum class Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-}
-
-data class PointDirection(val point: Point, val direction: Direction)
-
 private fun part1(): Int {
     val lines = inputStream().toList()
     val numberOfLines = lines.size
@@ -61,14 +52,6 @@ private fun nextPosition(point: Point, direction: Direction): Point =
         Direction.RIGHT -> Point(point.x + 1, point.y)
     }
 
-private fun turn90Degrees(direction: Direction): Direction =
-    when (direction) {
-        Direction.UP -> Direction.RIGHT
-        Direction.RIGHT -> Direction.DOWN
-        Direction.DOWN -> Direction.LEFT
-        Direction.LEFT -> Direction.UP
-    }
-
 private fun visitedPoints(
     initialPosition: Point,
     initialDirection: Direction,
@@ -87,7 +70,7 @@ private fun visitedPoints(
             visited.add(currentPosition)
             break
         } else if (lab[next.y][next.x] == '#') {
-            direction = turn90Degrees(direction)
+            direction = direction.turn90DegreesClockwise()
         } else {
             visited.add(currentPosition)
             currentPosition = next
@@ -131,7 +114,7 @@ private fun simulatedObstacleCausesLoop(
         } else if (lab[next.y][next.x] == '#' || next == simulatedObstaclePosition) {
             // Obstacle or simulated obstacle
             turnPointDirections.add(PointDirection(next, direction))
-            direction = turn90Degrees(direction)
+            direction = direction.turn90DegreesClockwise()
         } else {
             currentPosition = next
         }

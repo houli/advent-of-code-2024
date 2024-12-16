@@ -5,7 +5,7 @@ fun main() {
     println("Part 2: ${part2()}")
 }
 
-enum class Move {
+private enum class Move {
     UP,
     DOWN,
     LEFT,
@@ -31,7 +31,7 @@ enum class Move {
     }
 }
 
-enum class Tile {
+private enum class Tile {
     EMPTY,
     WALL,
     BOX,
@@ -50,14 +50,14 @@ enum class Tile {
     }
 }
 
-sealed interface BinaryTree<out T> {
+private sealed interface BinaryTree<out T> {
     data class Leaf<T>(val value: T) : BinaryTree<T>
 
     data class Branch<T>(val value: T, val left: BinaryTree<T>, val right: BinaryTree<T>) :
         BinaryTree<T>
 }
 
-sealed interface TreeNode {
+private sealed interface TreeNode {
     data class BigBox(val start: Point, val end: Point) : TreeNode
 
     object Wall : TreeNode
