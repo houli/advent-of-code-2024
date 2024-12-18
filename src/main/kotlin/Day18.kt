@@ -7,11 +7,6 @@ fun main() {
     println("Part 2: ${part2()}")
 }
 
-private enum class Day18Tile {
-    CORRUPTED,
-    EMPTY,
-}
-
 private fun testStream() = resourceLineStream("/18/test.txt")
 
 private fun inputStream() = resourceLineStream("/18/input.txt")
@@ -20,14 +15,8 @@ private fun part1(): Int {
     val input = inputStream().toList()
     val corruptedTilesSubset = corruptedTiles(input).take(1024).toSet()
     val size = 71
-    val grid =
-        Array(size) { y ->
-            Array(size) { x ->
-                if (Point(x, y) in corruptedTilesSubset) Day18Tile.CORRUPTED else Day18Tile.EMPTY
-            }
-        }
 
-    val graph = buildGraph(grid)
+    val graph = buildGraph(corruptedTilesSubset, size, size)
     val initialPosition = Point(0, 0)
     val endPosition = Point(size - 1, size - 1)
 
@@ -38,28 +27,25 @@ private fun part2(): Point {
     val input = inputStream().toList()
     val allCorruptedTiles = corruptedTiles(input)
     val size = 71
-    for (i in 1..allCorruptedTiles.size) {
-        val corruptedTilesSubset = allCorruptedTiles.take(i).toSet()
-        val grid =
-            Array(size) { y ->
-                Array(size) { x ->
-                    if (Point(x, y) in corruptedTilesSubset) Day18Tile.CORRUPTED
-                    else Day18Tile.EMPTY
-                }
-            }
 
-        val graph = buildGraph(grid)
-        val initialPosition = Point(0, 0)
-        val endPosition = Point(size - 1, size - 1)
+    val initialPosition = Point(0, 0)
+    val endPosition = Point(size - 1, size - 1)
+
+    var max = allCorruptedTiles.size - 1
+    var min = 0
+    while (min <= max) {
+        val mid = (min + max) / 2
+        val corruptedTilesSubset = allCorruptedTiles.take(mid + 1).toSet()
+        val graph = buildGraph(corruptedTilesSubset, size, size)
 
         val cost = dijkstra(graph, initialPosition, endPosition)
         if (cost == Int.MAX_VALUE) {
-            return allCorruptedTiles[i - 1]
+            max = mid - 1
+        } else {
+            min = mid + 1
         }
     }
-
-    // No max cost route found
-    return Point(-1, -1)
+    return allCorruptedTiles[min]
 }
 
 private fun dijkstra(
@@ -96,28 +82,28 @@ private fun corruptedTiles(input: List<String>): List<Point> =
         Point(x, y)
     }
 
-private fun buildGraph(grid: Array<Array<Day18Tile>>): Map<Point, Set<Pair<Int, Point>>> =
-    buildMap {
-        grid.forEachIndexed { y, row ->
-            row.forEachIndexed { x, tile ->
-                if (tile == Day18Tile.EMPTY) {
-                    val point = Point(x, y)
-                    val adjacentNodeCosts =
-                        Direction.entries
-                            .mapNotNull { direction ->
-                                val newPoint = point + direction.toVector()
-                                if (
-                                    newPoint.inBounds(grid[0].size, grid.size) &&
-                                        grid[newPoint.y][newPoint.x] == Day18Tile.EMPTY
-                                ) {
-                                    1 to newPoint
-                                } else {
-                                    null
-                                }
+private fun buildGraph(
+    corruptedTiles: Set<Point>,
+    width: Int,
+    height: Int,
+): Map<Point, Set<Pair<Int, Point>>> = buildMap {
+    for (x in 0..width) {
+        for (y in 0..height) {
+            val point = Point(x, y)
+            if (point !in corruptedTiles) {
+                val adjacentNodeCosts =
+                    Direction.entries
+                        .mapNotNull { direction ->
+                            val newPoint = point + direction.toVector()
+                            if (newPoint.inBounds(width, height) && newPoint !in corruptedTiles) {
+                                1 to newPoint
+                            } else {
+                                null
                             }
-                            .toSet()
-                    put(point, adjacentNodeCosts)
-                }
+                        }
+                        .toSet()
+                put(point, adjacentNodeCosts)
             }
         }
     }
+}
