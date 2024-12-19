@@ -13,18 +13,14 @@ private fun part1(): Int {
     val input = inputStream().toList()
     val towels = input[0].split(", ")
     val desiredDesigns = input.drop(2)
-    return desiredDesigns.count { design ->
-        countsForDesign(design, towels) > 0
-    }
+    return desiredDesigns.count { design -> countsForDesign(design, towels) > 0 }
 }
 
 private fun part2(): Long {
     val input = inputStream().toList()
     val towels = input[0].split(", ")
     val desiredDesigns = input.drop(2)
-    return desiredDesigns.sumOf { design ->
-        countsForDesign(design, towels)
-    }
+    return desiredDesigns.sumOf { design -> countsForDesign(design, towels) }
 }
 
 private fun countsForDesign(design: String, towels: List<String>): Long {
