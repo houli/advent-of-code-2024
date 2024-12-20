@@ -10,18 +10,14 @@ private fun testStream() = resourceLineStream("/20/test.txt")
 private fun inputStream() = resourceLineStream("/20/input.txt")
 
 private fun part1(): Int {
-    return commonSolution(inputStream().toList()) { it == 2 }
+    return commonSolution(inputStream().toList(), 2)
 }
 
 private fun part2(): Int {
-    return commonSolution(inputStream().toList()) { it <= 20 }
+    return commonSolution(inputStream().toList(), 20)
 }
 
-private fun commonSolution(
-    input: List<String>,
-    minimumSaving: Int = 100,
-    cheatCostPredicate: (Int) -> Boolean,
-): Int {
+private fun commonSolution(input: List<String>, cheatCostMax: Int, minimumSaving: Int = 100): Int {
     val width = input[0].length
     val height = input.size
     val walls = findWalls(input)
@@ -36,16 +32,18 @@ private fun commonSolution(
 
     val path = findPath(walls, width, height, initialPosition, goalPosition)
 
-    val possibleCheatStarts = path.dropLast(minimumSaving + 1)
+    val amountToDrop = minimumSaving + 1
+    val possibleCheatStarts = path.dropLast(amountToDrop)
     return possibleCheatStarts
         .mapIndexed { i, cheatStart ->
-            val possibleCheatEnds = path.drop(i + minimumSaving + 1)
+            val cheatEndStart = i + amountToDrop
+            val possibleCheatEnds = path.drop(cheatEndStart)
 
             possibleCheatEnds
                 .filterIndexed { j, cheatEnd ->
                     val cheatCost = cheatStart.manhattanDistance(cheatEnd)
-                    if (cheatCostPredicate(cheatCost)) {
-                        val realIndex = i + minimumSaving + 1 + j
+                    if (cheatCost <= cheatCostMax) {
+                        val realIndex = cheatEndStart + j
                         val cost = cheatCost + i + (path.size - realIndex)
                         val saving = path.size - cost
                         saving >= minimumSaving
