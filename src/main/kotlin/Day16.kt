@@ -41,7 +41,8 @@ private fun part1(): Int {
 
     val graph = buildGraph(maze)
 
-    val (cost, _) = dijkstra(graph, PointDirection(initialPosition, Direction.RIGHT), goalPosition)
+    val (cost, _) =
+        dijkstraModified(graph, PointDirection(initialPosition, Direction.RIGHT), goalPosition)
     return cost
 }
 
@@ -60,11 +61,11 @@ private fun part2(): Int {
     val graph = buildGraph(maze)
 
     val (_, pointsVisitedOnBestPaths) =
-        dijkstra(graph, PointDirection(initialPosition, Direction.RIGHT), goalPosition)
+        dijkstraModified(graph, PointDirection(initialPosition, Direction.RIGHT), goalPosition)
     return pointsVisitedOnBestPaths.size
 }
 
-private fun dijkstra(
+private fun dijkstraModified(
     graph: Map<PointDirection, Set<Pair<Int, PointDirection>>>,
     initialPosition: PointDirection,
     goalPosition: Point,

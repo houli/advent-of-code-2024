@@ -1,7 +1,5 @@
 package io.github.houli
 
-import java.util.PriorityQueue
-
 fun main() {
     println("Part 1: ${part1()}")
     println("Part 2: ${part2()}")
@@ -48,34 +46,6 @@ private fun part2(): Point {
     return allCorruptedTiles[min]
 }
 
-private fun dijkstra(
-    graph: Map<Point, Set<Pair<Int, Point>>>,
-    initialPosition: Point,
-    goalPosition: Point,
-): Int {
-    val costs = mutableMapOf<Point, Int>(initialPosition to 0).withDefault { Int.MAX_VALUE }
-    val priorityQueue =
-        PriorityQueue<Pair<Int, Point>>(compareBy { it.first }).apply { add(0 to initialPosition) }
-    val visited = mutableSetOf<Pair<Int, Point>>()
-
-    while (priorityQueue.isNotEmpty()) {
-        val (currentCost, currentPoint) = priorityQueue.poll()
-        val added = visited.add(currentCost to currentPoint)
-        if (added) {
-            graph[currentPoint]?.forEach { (costOfMove, newPoint) ->
-                val newCost = currentCost + costOfMove
-                val bestCost = costs.getValue(newPoint)
-                if (newCost < bestCost) {
-                    costs[newPoint] = newCost
-                    priorityQueue.add(newCost to newPoint)
-                }
-            }
-        }
-    }
-
-    return costs.getValue(goalPosition)
-}
-
 private fun corruptedTiles(input: List<String>): List<Point> =
     input.map { line ->
         val (x, y) = line.split(",").map(String::toInt)
@@ -87,8 +57,8 @@ private fun buildGraph(
     width: Int,
     height: Int,
 ): Map<Point, Set<Pair<Int, Point>>> = buildMap {
-    for (x in 0..width) {
-        for (y in 0..height) {
+    for (x in 0..<width) {
+        for (y in 0..<height) {
             val point = Point(x, y)
             if (point !in corruptedTiles) {
                 val adjacentNodeCosts =
