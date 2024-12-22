@@ -2,6 +2,10 @@ package io.github.houli
 
 import java.util.stream.Stream
 import kotlin.math.absoluteValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 
 fun main() {
     println("Part 1: ${part1()}")
@@ -38,9 +42,12 @@ private fun part2(): Long {
             }
             map
         }
-    return permutations.maxOfOrNull { permutation ->
-        inputMaps.sumOf { map -> map[permutation] ?: 0 }
-    } ?: 0
+    return runBlocking(Dispatchers.Default) {
+            permutations
+                .map { permutation -> async { inputMaps.sumOf { map -> map[permutation] ?: 0 } } }
+                .awaitAll()
+        }
+        .maxOrNull() ?: 0
 }
 
 private fun lastDigitSequence(sequence: Sequence<Long>): Sequence<Long> =
