@@ -14,45 +14,45 @@ enum class PointerMove {
 
     fun moveTo(other: PointerMove): List<PointerMove> =
         when (this) {
-            PointerMove.UP ->
+            UP ->
                 when (other) {
-                    PointerMove.UP -> emptyList()
-                    PointerMove.DOWN -> listOf(PointerMove.DOWN)
-                    PointerMove.LEFT -> listOf(PointerMove.DOWN, PointerMove.LEFT)
-                    PointerMove.RIGHT -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
-                    PointerMove.A -> listOf(PointerMove.RIGHT)
+                    UP -> emptyList()
+                    DOWN -> listOf(DOWN)
+                    LEFT -> listOf(DOWN, LEFT)
+                    RIGHT -> listOf(DOWN, RIGHT)
+                    A -> listOf(RIGHT)
                 }
-            PointerMove.DOWN ->
+            DOWN ->
                 when (other) {
-                    PointerMove.UP -> listOf(PointerMove.UP)
-                    PointerMove.DOWN -> emptyList()
-                    PointerMove.LEFT -> listOf(PointerMove.LEFT)
-                    PointerMove.RIGHT -> listOf(PointerMove.RIGHT)
-                    PointerMove.A -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    UP -> listOf(UP)
+                    DOWN -> emptyList()
+                    LEFT -> listOf(LEFT)
+                    RIGHT -> listOf(RIGHT)
+                    A -> listOf(UP, RIGHT)
                 }
-            PointerMove.LEFT ->
+            LEFT ->
                 when (other) {
-                    PointerMove.UP -> listOf(PointerMove.RIGHT, PointerMove.UP)
-                    PointerMove.DOWN -> listOf(PointerMove.RIGHT)
-                    PointerMove.LEFT -> emptyList()
-                    PointerMove.RIGHT -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
-                    PointerMove.A -> listOf(PointerMove.RIGHT, PointerMove.RIGHT, PointerMove.UP)
+                    UP -> listOf(RIGHT, UP)
+                    DOWN -> listOf(RIGHT)
+                    LEFT -> emptyList()
+                    RIGHT -> listOf(RIGHT, RIGHT)
+                    A -> listOf(RIGHT, RIGHT, UP)
                 }
-            PointerMove.RIGHT ->
+            RIGHT ->
                 when (other) {
-                    PointerMove.UP -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    PointerMove.DOWN -> listOf(PointerMove.LEFT)
-                    PointerMove.LEFT -> listOf(PointerMove.LEFT, PointerMove.LEFT)
-                    PointerMove.RIGHT -> emptyList()
-                    PointerMove.A -> listOf(PointerMove.UP)
+                    UP -> listOf(LEFT, UP)
+                    DOWN -> listOf(LEFT)
+                    LEFT -> listOf(LEFT, LEFT)
+                    RIGHT -> emptyList()
+                    A -> listOf(UP)
                 }
-            PointerMove.A ->
+            A ->
                 when (other) {
-                    PointerMove.UP -> listOf(PointerMove.LEFT)
-                    PointerMove.DOWN -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    PointerMove.LEFT -> listOf(PointerMove.DOWN, PointerMove.LEFT, PointerMove.LEFT)
-                    PointerMove.RIGHT -> listOf(PointerMove.DOWN)
-                    PointerMove.A -> emptyList()
+                    UP -> listOf(LEFT)
+                    DOWN -> listOf(LEFT, DOWN)
+                    LEFT -> listOf(DOWN, LEFT, LEFT)
+                    RIGHT -> listOf(DOWN)
+                    A -> emptyList()
                 }
         }
 }
@@ -72,82 +72,79 @@ enum class KeyPadButton {
 
     fun moveTo(other: KeyPadButton): List<PointerMove> =
         when (this) {
-            KeyPadButton.ZERO ->
+            ZERO ->
                 when (other) {
-                    KeyPadButton.ZERO -> emptyList()
-                    KeyPadButton.ONE -> listOf(PointerMove.UP, PointerMove.LEFT)
-                    KeyPadButton.TWO -> listOf(PointerMove.UP)
-                    KeyPadButton.THREE -> listOf(PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.LEFT)
-                    KeyPadButton.FIVE -> listOf(PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.SIX -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN ->
+                    ZERO -> emptyList()
+                    ONE -> listOf(PointerMove.UP, PointerMove.LEFT)
+                    TWO -> listOf(PointerMove.UP)
+                    THREE -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    FOUR -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.LEFT)
+                    FIVE -> listOf(PointerMove.UP, PointerMove.UP)
+                    SIX -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
+                    SEVEN ->
                         listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP, PointerMove.LEFT)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.NINE ->
+                    EIGHT -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP)
+                    NINE ->
                         listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.A -> listOf(PointerMove.RIGHT)
+                    A -> listOf(PointerMove.RIGHT)
                 }
-            KeyPadButton.ONE ->
+            ONE ->
                 when (other) {
-                    KeyPadButton.ZERO -> listOf(PointerMove.RIGHT, PointerMove.DOWN)
-                    KeyPadButton.ONE -> emptyList()
-                    KeyPadButton.TWO -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.THREE -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> listOf(PointerMove.UP)
-                    KeyPadButton.FIVE -> listOf(PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.SIX -> listOf(PointerMove.UP, PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.NINE ->
+                    ZERO -> listOf(PointerMove.RIGHT, PointerMove.DOWN)
+                    ONE -> emptyList()
+                    TWO -> listOf(PointerMove.RIGHT)
+                    THREE -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
+                    FOUR -> listOf(PointerMove.UP)
+                    FIVE -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    SIX -> listOf(PointerMove.UP, PointerMove.RIGHT, PointerMove.RIGHT)
+                    SEVEN -> listOf(PointerMove.UP, PointerMove.UP)
+                    EIGHT -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
+                    NINE ->
                         listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.A -> listOf(PointerMove.RIGHT, PointerMove.RIGHT, PointerMove.DOWN)
+                    A -> listOf(PointerMove.RIGHT, PointerMove.RIGHT, PointerMove.DOWN)
                 }
-            KeyPadButton.TWO ->
+            TWO ->
                 when (other) {
-                    KeyPadButton.ZERO -> listOf(PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.LEFT)
-                    KeyPadButton.TWO -> emptyList()
-                    KeyPadButton.THREE -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.FIVE -> listOf(PointerMove.UP)
-                    KeyPadButton.SIX -> listOf(PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.NINE -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.A -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
+                    ZERO -> listOf(PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.LEFT)
+                    TWO -> emptyList()
+                    THREE -> listOf(PointerMove.RIGHT)
+                    FOUR -> listOf(PointerMove.LEFT, PointerMove.UP)
+                    FIVE -> listOf(PointerMove.UP)
+                    SIX -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    SEVEN -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
+                    EIGHT -> listOf(PointerMove.UP, PointerMove.UP)
+                    NINE -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.RIGHT)
+                    A -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
                 }
-            KeyPadButton.THREE ->
+            THREE ->
                 when (other) {
-                    KeyPadButton.ZERO -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.LEFT, PointerMove.LEFT)
-                    KeyPadButton.TWO -> listOf(PointerMove.LEFT)
-                    KeyPadButton.THREE -> emptyList()
-                    KeyPadButton.FOUR -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.FIVE -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.SIX -> listOf(PointerMove.UP)
-                    KeyPadButton.SEVEN ->
+                    ZERO -> listOf(PointerMove.LEFT, PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.LEFT, PointerMove.LEFT)
+                    TWO -> listOf(PointerMove.LEFT)
+                    THREE -> emptyList()
+                    FOUR -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.UP)
+                    FIVE -> listOf(PointerMove.LEFT, PointerMove.UP)
+                    SIX -> listOf(PointerMove.UP)
+                    SEVEN ->
                         listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.NINE -> listOf(PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.A -> listOf(PointerMove.DOWN)
+                    EIGHT -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
+                    NINE -> listOf(PointerMove.UP, PointerMove.UP)
+                    A -> listOf(PointerMove.DOWN)
                 }
-            KeyPadButton.FOUR ->
+            FOUR ->
                 when (other) {
-                    KeyPadButton.ZERO ->
-                        listOf(PointerMove.RIGHT, PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.DOWN)
-                    KeyPadButton.TWO -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.THREE ->
-                        listOf(PointerMove.DOWN, PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> emptyList()
-                    KeyPadButton.FIVE -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.SIX -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.NINE ->
-                        listOf(PointerMove.UP, PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.A ->
+                    ZERO -> listOf(PointerMove.RIGHT, PointerMove.DOWN, PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
+                    THREE -> listOf(PointerMove.DOWN, PointerMove.RIGHT, PointerMove.RIGHT)
+                    FOUR -> emptyList()
+                    FIVE -> listOf(PointerMove.RIGHT)
+                    SIX -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
+                    SEVEN -> listOf(PointerMove.UP)
+                    EIGHT -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    NINE -> listOf(PointerMove.UP, PointerMove.RIGHT, PointerMove.RIGHT)
+                    A ->
                         listOf(
                             PointerMove.RIGHT,
                             PointerMove.RIGHT,
@@ -155,62 +152,59 @@ enum class KeyPadButton {
                             PointerMove.DOWN,
                         )
                 }
-            KeyPadButton.FIVE ->
+            FIVE ->
                 when (other) {
-                    KeyPadButton.ZERO -> listOf(PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.TWO -> listOf(PointerMove.DOWN)
-                    KeyPadButton.THREE -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> listOf(PointerMove.LEFT)
-                    KeyPadButton.FIVE -> emptyList()
-                    KeyPadButton.SIX -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.UP)
-                    KeyPadButton.NINE -> listOf(PointerMove.UP, PointerMove.RIGHT)
-                    KeyPadButton.A -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
+                    ZERO -> listOf(PointerMove.DOWN, PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.LEFT, PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.DOWN)
+                    THREE -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
+                    FOUR -> listOf(PointerMove.LEFT)
+                    FIVE -> emptyList()
+                    SIX -> listOf(PointerMove.RIGHT)
+                    SEVEN -> listOf(PointerMove.LEFT, PointerMove.UP)
+                    EIGHT -> listOf(PointerMove.UP)
+                    NINE -> listOf(PointerMove.UP, PointerMove.RIGHT)
+                    A -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
                 }
-            KeyPadButton.SIX ->
+            SIX ->
                 when (other) {
-                    KeyPadButton.ZERO ->
-                        listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.TWO -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.THREE -> listOf(PointerMove.DOWN)
-                    KeyPadButton.FOUR -> listOf(PointerMove.LEFT, PointerMove.LEFT)
-                    KeyPadButton.FIVE -> listOf(PointerMove.LEFT)
-                    KeyPadButton.SIX -> emptyList()
-                    KeyPadButton.SEVEN -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.NINE -> listOf(PointerMove.UP)
-                    KeyPadButton.A -> listOf(PointerMove.DOWN, PointerMove.DOWN)
+                    ZERO -> listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.LEFT, PointerMove.DOWN)
+                    THREE -> listOf(PointerMove.DOWN)
+                    FOUR -> listOf(PointerMove.LEFT, PointerMove.LEFT)
+                    FIVE -> listOf(PointerMove.LEFT)
+                    SIX -> emptyList()
+                    SEVEN -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.UP)
+                    EIGHT -> listOf(PointerMove.LEFT, PointerMove.UP)
+                    NINE -> listOf(PointerMove.UP)
+                    A -> listOf(PointerMove.DOWN, PointerMove.DOWN)
                 }
-            KeyPadButton.SEVEN ->
+            SEVEN ->
                 when (other) {
-                    KeyPadButton.ZERO ->
+                    ZERO ->
                         listOf(
                             PointerMove.RIGHT,
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                         )
-                    KeyPadButton.ONE -> listOf(PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.TWO ->
-                        listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.THREE ->
+                    ONE -> listOf(PointerMove.DOWN, PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
+                    THREE ->
                         listOf(
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                             PointerMove.RIGHT,
                             PointerMove.RIGHT,
                         )
-                    KeyPadButton.FOUR -> listOf(PointerMove.DOWN)
-                    KeyPadButton.FIVE -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.SIX ->
-                        listOf(PointerMove.DOWN, PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> emptyList()
-                    KeyPadButton.EIGHT -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.NINE -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
-                    KeyPadButton.A ->
+                    FOUR -> listOf(PointerMove.DOWN)
+                    FIVE -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
+                    SIX -> listOf(PointerMove.DOWN, PointerMove.RIGHT, PointerMove.RIGHT)
+                    SEVEN -> emptyList()
+                    EIGHT -> listOf(PointerMove.RIGHT)
+                    NINE -> listOf(PointerMove.RIGHT, PointerMove.RIGHT)
+                    A ->
                         listOf(
                             PointerMove.RIGHT,
                             PointerMove.RIGHT,
@@ -219,21 +213,19 @@ enum class KeyPadButton {
                             PointerMove.DOWN,
                         )
                 }
-            KeyPadButton.EIGHT ->
+            EIGHT ->
                 when (other) {
-                    KeyPadButton.ZERO ->
-                        listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.ONE -> listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.TWO -> listOf(PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.THREE ->
-                        listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.FOUR -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.FIVE -> listOf(PointerMove.DOWN)
-                    KeyPadButton.SIX -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.LEFT)
-                    KeyPadButton.EIGHT -> emptyList()
-                    KeyPadButton.NINE -> listOf(PointerMove.RIGHT)
-                    KeyPadButton.A ->
+                    ZERO -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.DOWN)
+                    ONE -> listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.DOWN, PointerMove.DOWN)
+                    THREE -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.RIGHT)
+                    FOUR -> listOf(PointerMove.LEFT, PointerMove.DOWN)
+                    FIVE -> listOf(PointerMove.DOWN)
+                    SIX -> listOf(PointerMove.DOWN, PointerMove.RIGHT)
+                    SEVEN -> listOf(PointerMove.LEFT)
+                    EIGHT -> emptyList()
+                    NINE -> listOf(PointerMove.RIGHT)
+                    A ->
                         listOf(
                             PointerMove.DOWN,
                             PointerMove.DOWN,
@@ -241,44 +233,43 @@ enum class KeyPadButton {
                             PointerMove.RIGHT,
                         )
                 }
-            KeyPadButton.NINE ->
+            NINE ->
                 when (other) {
-                    KeyPadButton.ZERO ->
+                    ZERO ->
                         listOf(
                             PointerMove.LEFT,
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                         )
-                    KeyPadButton.ONE ->
+                    ONE ->
                         listOf(
                             PointerMove.LEFT,
                             PointerMove.LEFT,
                             PointerMove.DOWN,
                             PointerMove.DOWN,
                         )
-                    KeyPadButton.TWO -> listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.THREE -> listOf(PointerMove.DOWN, PointerMove.DOWN)
-                    KeyPadButton.FOUR ->
-                        listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.FIVE -> listOf(PointerMove.LEFT, PointerMove.DOWN)
-                    KeyPadButton.SIX -> listOf(PointerMove.DOWN)
-                    KeyPadButton.SEVEN -> listOf(PointerMove.LEFT, PointerMove.LEFT)
-                    KeyPadButton.EIGHT -> listOf(PointerMove.LEFT)
-                    KeyPadButton.NINE -> emptyList()
-                    KeyPadButton.A -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.DOWN)
+                    TWO -> listOf(PointerMove.LEFT, PointerMove.DOWN, PointerMove.DOWN)
+                    THREE -> listOf(PointerMove.DOWN, PointerMove.DOWN)
+                    FOUR -> listOf(PointerMove.LEFT, PointerMove.LEFT, PointerMove.DOWN)
+                    FIVE -> listOf(PointerMove.LEFT, PointerMove.DOWN)
+                    SIX -> listOf(PointerMove.DOWN)
+                    SEVEN -> listOf(PointerMove.LEFT, PointerMove.LEFT)
+                    EIGHT -> listOf(PointerMove.LEFT)
+                    NINE -> emptyList()
+                    A -> listOf(PointerMove.DOWN, PointerMove.DOWN, PointerMove.DOWN)
                 }
-            KeyPadButton.A ->
+            A ->
                 when (other) {
-                    KeyPadButton.ZERO -> listOf(PointerMove.LEFT)
-                    KeyPadButton.ONE -> listOf(PointerMove.UP, PointerMove.LEFT, PointerMove.LEFT)
-                    KeyPadButton.TWO -> listOf(PointerMove.LEFT, PointerMove.UP)
-                    KeyPadButton.THREE -> listOf(PointerMove.UP)
-                    KeyPadButton.FOUR ->
+                    ZERO -> listOf(PointerMove.LEFT)
+                    ONE -> listOf(PointerMove.UP, PointerMove.LEFT, PointerMove.LEFT)
+                    TWO -> listOf(PointerMove.LEFT, PointerMove.UP)
+                    THREE -> listOf(PointerMove.UP)
+                    FOUR ->
                         listOf(PointerMove.UP, PointerMove.UP, PointerMove.LEFT, PointerMove.LEFT)
-                    KeyPadButton.FIVE -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.SIX -> listOf(PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.SEVEN ->
+                    FIVE -> listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP)
+                    SIX -> listOf(PointerMove.UP, PointerMove.UP)
+                    SEVEN ->
                         listOf(
                             PointerMove.UP,
                             PointerMove.UP,
@@ -286,10 +277,10 @@ enum class KeyPadButton {
                             PointerMove.LEFT,
                             PointerMove.LEFT,
                         )
-                    KeyPadButton.EIGHT ->
+                    EIGHT ->
                         listOf(PointerMove.LEFT, PointerMove.UP, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.NINE -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP)
-                    KeyPadButton.A -> emptyList()
+                    NINE -> listOf(PointerMove.UP, PointerMove.UP, PointerMove.UP)
+                    A -> emptyList()
                 }
         }
 
